@@ -101,11 +101,11 @@ func main() {
 func InitDatabase() *gorm.DB {
 	//数据库类型，地址，端口，地址，数据库名称，密码
 	driverName := "mysql"
-	host := "localhost"
+	host := "106.13.162.70"
 	port := "3306"
-	database := "test"
-	username := "root"
-	password := "test"
+	database := "users"
+	username := "rdsroot"
+	password := "qwer1234"
 
 	//编码。教程用的是utf8，但是sql的utf8是假的utf8,utf8mb4才是真utf8
 	charset := "utf8mb4"
