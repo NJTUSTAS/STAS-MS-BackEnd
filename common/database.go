@@ -4,14 +4,12 @@ import (
 	"DemoProjectGO/model"
 	"fmt"
 	"github.com/jinzhu/gorm"
-	"log"
-
 	//这里要加一行来完成对mysql的驱动初始化
 	_ "github.com/go-sql-driver/mysql"
 )
 
 //var db *gorm.DB
-var db *gorm.DB = InitDatabase()
+var db *gorm.DB
 
 func InitDatabase() *gorm.DB {
 	//数据库类型，地址，端口，地址，数据库名称，密码
@@ -41,7 +39,8 @@ func InitDatabase() *gorm.DB {
 
 func GetDB() *gorm.DB {
 	if db == nil {
-		log.Printf("你妈的为什么 给我一个空指针")
+		//没有就自动生成
+		db = InitDatabase()
 	}
 	return db
 }

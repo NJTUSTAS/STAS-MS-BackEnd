@@ -1,4 +1,4 @@
-from my_unit import *
+from util.my_unit import *
 
 # 测试域名
 domin = "http://localhost:8080"
