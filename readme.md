@@ -20,7 +20,7 @@
 - main.go
 
   程序入口
-- routes.go
+- routers.go
   存放各api，不知道为啥没法用，现在api还是直接写在main里。
 - test.py
   测试api的py脚本
