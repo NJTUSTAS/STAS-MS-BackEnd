@@ -11,7 +11,11 @@ import (
 
 //业务逻辑
 func Register(context *gin.Context) {
-	db:=common.GetDB()
+	//注册提供【用户名，邮箱，哈希密码三个参数】
+	//用户名为空则随机生成用户名
+	//邮箱不能重复
+	//哈希密码为密码的哈希值
+	db := common.GetDB()
 
 	//从请求中获取数据。前端往后端请求的时候密码应该做一次哈希，因此这里直接用哈希后的密码。
 	name := context.PostForm("name")
@@ -30,7 +34,7 @@ func Register(context *gin.Context) {
 		return
 	}
 	//电话重复性验证
-	if EmailExistQ(db, email) {
+	if GetIDformEmail(db, email) != 0 {
 		context.JSON(422, gin.H{
 			"code": 422,
 			"msg":  "exist email address!"})
@@ -64,10 +68,12 @@ func Register(context *gin.Context) {
 	log.Println("结束写入数据库")
 }
 
-func EmailExistQ(db *gorm.DB, email string) bool {
+
+func GetIDformEmail(db *gorm.DB, email string) uint {
+	//不存在为0
 	var user model.User
 	//查找数据库并且把找到的第一个结果传给user
 	db.Where("email = ?", email).First(&user)
 	//user.ID是在默认值里的，如果找不到那么ID就是0
-	return user.ID != 0
+	return user.ID
 }
