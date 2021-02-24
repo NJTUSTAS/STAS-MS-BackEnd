@@ -12,20 +12,21 @@ class Unittest:
     #    指定数据测试
     def single_test(self, data):
         response = requests.post(self.url, data)
-        print(response.text)
+        # print(response.text)
 
     # 批量测试
     def unittest(self):
+        passed = True
         for data, expect in self.expected_io:
             response = requests.post(self.url, data)
             try:
                 ret = json.loads(response.text)
             except json.decoder.JSONDecodeError:
                 ret = {}
-            if self.reshape(ret) == expect:
-                print(True, end="\t")
-            else:
+            if self.reshape(ret) != expect:
                 print(False, f"\ninput:{data}\nexpect:{expect}\nresponse:{response.text}")
+                passed = False
+        return passed
 
         # print(ret == expect)
 
@@ -84,8 +85,7 @@ class LoginTest(Unittest):
         expected_return = (
             {"code": 200, "data": {"token": ""}, "msg": "登录成功"},
             {"code": 422, "msg": "用户不存在"},
-            {"code": 400, "msg": "用户名与密码不匹配"}
-        )
+            {"code": 400, "msg": "用户名与密码不匹配"})
 
         def remake(data: dict) -> dict:
             if "data" in data:
@@ -97,6 +97,6 @@ class LoginTest(Unittest):
 
 
 if __name__ == "__main__":
-    for i in range(1):
-        LoginTest().unittest()
-        print()
+    print()
+    print("register", all(RegisterTest().unittest() for i in range(50)))
+    print("login", all(LoginTest().unittest() for i in range(50)))
