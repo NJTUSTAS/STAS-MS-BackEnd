@@ -6,7 +6,9 @@ import (
 	"DemoProjectGO/util"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
 	"log"
+	"net/http"
 )
 
 //业务逻辑
@@ -14,13 +16,14 @@ func Register(context *gin.Context) {
 	//注册提供【用户名，邮箱，哈希密码三个参数】
 	//用户名为空则随机生成用户名
 	//邮箱不能重复
-	//哈希密码为密码的哈希值
 	db := common.GetDB()
 
 	//从请求中获取数据。前端往后端请求的时候密码应该做一次哈希，因此这里直接用哈希后的密码。
 	name := context.PostForm("name")
 	email := context.PostForm("email")
-	passwordHashed := context.PostForm("password")
+	password := context.PostForm("password")
+	passwordHashed, _ := Hash(password, context)
+	//如果出错这里要返回http500内部错误，但是懒得写了
 
 	//以下开始验证
 	//邮箱合法性验证
@@ -68,6 +71,15 @@ func Register(context *gin.Context) {
 	log.Println("结束写入数据库")
 }
 
+func Hash(password string, context *gin.Context) []byte {
+	//自定义哈希和加盐方法
+	//现在先用随便什么最简单的
+	ret, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"code": 500, "msg": "hash error"})
+	}
+	return ret
+}
 
 func GetIDformEmail(db *gorm.DB, email string) uint {
 	//不存在为0
