@@ -22,7 +22,7 @@ func Register(context *gin.Context) {
 	name := context.PostForm("name")
 	email := context.PostForm("email")
 	password := context.PostForm("password")
-	passwordHashed, _ := Hash(password, context)
+	passwordHashed := Hash(password, context)
 	//如果出错这里要返回http500内部错误，但是懒得写了
 
 	//以下开始验证
@@ -37,7 +37,7 @@ func Register(context *gin.Context) {
 		return
 	}
 	//电话重复性验证
-	if GetIDformEmail(db, email) != 0 {
+	if GetUserformEmail(db, email).ID != 0 {
 		context.JSON(422, gin.H{
 			"code": 422,
 			"msg":  "exist email address!"})
@@ -64,21 +64,11 @@ func Register(context *gin.Context) {
 	}
 
 	//通过验证，可以开始写入了。先生成数据结构，在表中创建对应的行。
-	newUser := model.User{Name: name, Email: email, PasswordHashed: passwordHashed}
+	newUser := model.User{Name: name, Email: email, Hashword: passwordHashed}
 	log.Println("开始写入数据库")
 	//注意这里要传引用
 	db.Create(&newUser)
 	log.Println("结束写入数据库")
-}
-
-func Hash(password string, context *gin.Context) []byte {
-	//自定义哈希和加盐方法
-	//现在先用随便什么最简单的
-	ret, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"code": 500, "msg": "hash error"})
-	}
-	return ret
 }
 
 func Login(context *gin.Context) {
@@ -86,12 +76,58 @@ func Login(context *gin.Context) {
 	//邮箱应当存在，否则报错
 	//密码应当匹配。否则报错
 	//返回token
+	db := common.GetDB()
+
+	//从请求中获取数据。前端往后端请求的时候密码应该做一次哈希，因此这里直接用哈希后的密码。
+	email := context.PostForm("email")
+	password := context.PostForm("password")
+	//passwordHashed := Hash(password, context)
+
+	//合法性验证由前端完成，进行用户存在性验证
+	user := GetUserformEmail(db, email)
+	if user.ID == 0 {
+		context.JSON(http.StatusUnprocessableEntity, gin.H{"code": 422, "msg": "用户不存在"})
+		return
+	}
+
+	//密码匹配验证
+	if passwordMatchQ(user.Hashword, password) {
+		context.JSON(http.StatusBadRequest, gin.H{"code": 400, "msg": "用户名与密码不匹配"})
+		return
+	}
+
+	//发放token
+	token := util.RandomHexName(16)
+	context.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": gin.H{"token": token},
+		"msg":  "登录成功",
+	})
+
 }
-func GetIDformEmail(db *gorm.DB, email string) uint {
+
+func passwordMatchQ(hushword string, password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hushword), []byte(password))
+	return err == nil
+}
+
+func GetUserformEmail(db *gorm.DB, email string) model.User {
 	//不存在为0
 	var user model.User
 	//查找数据库并且把找到的第一个结果传给user
 	db.Where("email = ?", email).First(&user)
 	//user.ID是在默认值里的，如果找不到那么ID就是0
-	return user.ID
+	return user
+}
+
+func Hash(password string, context *gin.Context) string {
+	//自定义哈希和加盐方法
+	//现在先用随便什么最简单的
+	//理论上没return会导致出错了会有一堆，但是问题不大
+	cRet, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"code": 500, "msg": "hash error"})
+	}
+	//c表示是[]byte 类型，即c风格字符串
+	return string(cRet)
 }
