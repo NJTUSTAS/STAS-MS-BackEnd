@@ -26,21 +26,3 @@ def random_email():
 def random_password():
     return random_hex_str(8)
 
-
-# 单次测试
-def unittest(_expected_io, domin):
-    url = domin + "/api/auth/register"
-    dict().update()
-
-    for data, expect in _expected_io:
-        responce = requests.post(url, data)
-
-        ret = json.loads(responce.text)
-        if "name" in ret:
-            ret["name"] = ""
-        if ret == expect:
-            print(True, end="\t")
-        else:
-            print(f"{False}\n", data, responce.text)
-
-        # print(ret == expect)
