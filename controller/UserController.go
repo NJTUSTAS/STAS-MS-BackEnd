@@ -22,9 +22,9 @@ func Register(context *gin.Context) {
 	name := context.PostForm("name")
 	email := context.PostForm("email")
 	password := context.PostForm("password")
-	log.Println("注册密码",password)
+	log.Println("注册密码", password)
 	passwordHashed, _ := Hash(password)
-	//如果出错这里要返回http500内部错误，但是懒得写了
+	//如果出错这里要返回http500内部错误并且返回，但是懒得写了
 
 	//以下开始验证
 	//邮箱合法性验证
@@ -78,9 +78,9 @@ func Login(context *gin.Context) {
 	//从请求中获取数据。前端往后端请求的时候密码应该做一次哈希，因此这里直接用哈希后的密码。
 	email := context.PostForm("email")
 	password := context.PostForm("password")
-	log.Println("登录密码",password)
+	log.Println("登录密码", password)
 	passwordHashed, _ := Hash(password)
-	log.Println("登录hash：",passwordHashed)
+	log.Println("登录hash：", passwordHashed)
 	//passwordHashed := Hash(password, context)
 
 	//合法性验证由前端完成，进行用户存在性验证
