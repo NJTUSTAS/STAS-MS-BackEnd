@@ -24,7 +24,7 @@ func main() {
 	router := gin.Default()
 	//router = CollectRoute(router)
 	router.POST("/api/auth/register", controller.Register)
-	//post 端口到此结束
+	router.POST("/api/auth/login", controller.Login)
 
 	//上面是业务逻辑，现在开始运行，默认端口是8080
 	_ = router.Run(":8080")

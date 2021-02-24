@@ -81,6 +81,12 @@ func Hash(password string, context *gin.Context) []byte {
 	return ret
 }
 
+func Login(context *gin.Context) {
+	//提供邮箱和密码；
+	//邮箱应当存在，否则报错
+	//密码应当匹配。否则报错
+	//返回token
+}
 func GetIDformEmail(db *gorm.DB, email string) uint {
 	//不存在为0
 	var user model.User
