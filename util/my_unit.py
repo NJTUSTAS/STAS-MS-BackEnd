@@ -26,3 +26,33 @@ def random_email():
 def random_password():
     return random_hex_str(8)
 
+
+class Unittest:
+    def __init__(self):
+        self.reshape = lambda x: x
+        self.expected_io = ""
+        self.url = ""
+
+    #    指定数据测试
+    def single_test(self, data):
+        response = requests.post(self.url, data)
+        # print(response.text)
+
+    # 批量测试
+    def unittest(self):
+        passed = True
+        for data, expect in self.expected_io:
+            response = requests.post(self.url, data)
+            try:
+                ret = json.loads(response.text)
+            except json.decoder.JSONDecodeError:
+                ret = {}
+            if self.reshape(ret) != expect:
+                print(False, f"\ninput:{data}\nexpect:{expect}\nresponse:{response.text}")
+                passed = False
+        return passed
+
+        # print(ret == expect)
+
+    def reshape(self, _):
+        pass
