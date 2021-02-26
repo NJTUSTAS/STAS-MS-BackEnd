@@ -23,7 +23,7 @@ func Register(context *gin.Context) {
 	email := context.PostForm("email")
 	password := context.PostForm("password")
 	log.Println("注册密码", password)
-	passwordHashed := util.GetPassword(password)
+	passwordHashed := util.GetPasswordWithSalt(password)
 	//如果出错这里要返回http500内部错误并且返回，但是懒得写了
 
 	//以下开始验证
@@ -79,7 +79,7 @@ func Login(context *gin.Context) {
 	email := context.PostForm("email")
 	password := context.PostForm("password")
 	log.Println("登录密码", password)
-	passwordHashed := util.GetPassword(password)
+	passwordHashed := util.GetPasswordWithSalt(password)
 	log.Println("登录hash：", passwordHashed)
 	//passwordHashed := Hash(password, context)
 
