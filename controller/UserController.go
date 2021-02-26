@@ -4,11 +4,11 @@ import (
 	"DemoProjectGO/database"
 	"DemoProjectGO/model"
 	"DemoProjectGO/util"
-	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
-	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
 //业务逻辑
@@ -23,7 +23,7 @@ func Register(context *gin.Context) {
 	email := context.PostForm("email")
 	password := context.PostForm("password")
 	log.Println("注册密码", password)
-	passwordHashed, _ := Hash(password)
+	passwordHashed := util.GetPassword(password)
 	//如果出错这里要返回http500内部错误并且返回，但是懒得写了
 
 	//以下开始验证
@@ -50,7 +50,7 @@ func Register(context *gin.Context) {
 	//验证用户名
 	if len(name) == 0 {
 		//允许不取名，系统生成16位随机16进制字符。
-		name = util.RandomHexName(16)
+		name = util.RandomHexString(16)
 		context.JSON(200, gin.H{
 			"code": 200,
 			"msg":  "no user name,auto generated.",
@@ -79,7 +79,7 @@ func Login(context *gin.Context) {
 	email := context.PostForm("email")
 	password := context.PostForm("password")
 	log.Println("登录密码", password)
-	passwordHashed, _ := Hash(password)
+	passwordHashed := util.GetPassword(password)
 	log.Println("登录hash：", passwordHashed)
 	//passwordHashed := Hash(password, context)
 
@@ -92,34 +92,20 @@ func Login(context *gin.Context) {
 	}
 
 	//密码匹配验证
-	if !passwordMatchQ(user.Hashword, password) {
+	if !util.CheckPassword(password, user.Hashword) {
 		log.Println("密码不匹配")
 		context.JSON(http.StatusBadRequest, gin.H{"code": 400, "msg": "用户名与密码不匹配"})
 		return
 	}
 
 	//默认正常行为：发放token
-	token := util.RandomHexName(16)
+	token := util.RandomHexString(16)
 	context.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"data": gin.H{"token": token},
 		"msg":  "登录成功",
 	})
 
-}
-
-func passwordMatchQ(hashword string, password string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hashword), []byte(password))
-	return err == nil
-}
-
-func Hash(password string) (string, error) {
-	//自定义哈希和加盐方法
-	//现在先用随便什么最简单的
-	//理论上没return会导致出错了会有一堆，但是问题不大
-	cRet, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	//c表示是[]byte 类型，即c风格字符串
-	return string(cRet), err
 }
 
 func GetUserformEmail(db *gorm.DB, email string) model.User {
