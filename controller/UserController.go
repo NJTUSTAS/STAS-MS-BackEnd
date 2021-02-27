@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"DemoProjectGO/database"
+	"DemoProjectGO/common"
 	"DemoProjectGO/model"
 	"DemoProjectGO/util"
 	"log"
@@ -16,7 +16,7 @@ func Register(context *gin.Context) {
 	//注册提供【用户名，邮箱，哈希密码三个参数】
 	//用户名为空则随机生成用户名
 	//邮箱不能重复
-	db := database.GetDB()
+	db := common.GetDB()
 
 	//从请求中获取数据。前端往后端请求的时候密码应该做一次哈希，因此这里直接用哈希后的密码。
 	name := context.PostForm("name")
@@ -73,7 +73,7 @@ func Login(context *gin.Context) {
 	//邮箱应当存在，否则报错
 	//密码应当匹配。否则报错
 	//返回token
-	db := database.GetDB()
+	db := common.GetDB()
 
 	//从请求中获取数据。前端往后端请求的时候密码应该做一次哈希，因此这里直接用哈希后的密码。
 	email := context.PostForm("email")

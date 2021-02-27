@@ -2,8 +2,8 @@ package main
 
 //gin，gorm和mysql都要用gin安装
 import (
-	"DemoProjectGO/database"
 	"fmt"
+	"DemoProjectGO/common"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +14,7 @@ func main() {
 	//defer 会在return之后调用，类似with open() as xxx这样
 	//数据库信息硬编码在InitDatabase()里，可能也有不好的地方但是也能用
 	//db := common.InitDatabase()
-	db := database.GetDB()
+	db := common.GetDB()
 	defer db.Close()
 
 	fmt.Println("database connected")

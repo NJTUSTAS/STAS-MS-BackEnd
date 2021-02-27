@@ -1,9 +1,11 @@
-package database
+package common
 
 import (
 	"DemoProjectGO/model"
 	"fmt"
+
 	"github.com/jinzhu/gorm"
+
 	//这里要加一行来完成对mysql的驱动初始化
 	_ "github.com/go-sql-driver/mysql"
 )
