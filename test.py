@@ -70,6 +70,7 @@ class LoginTest(Unittest):
 
         def remake(data: dict) -> dict:
             if "data" in data:
+                # print("token:", data["data"]["token"])
                 data["data"]["token"] = ""
             return data
 
@@ -78,7 +79,7 @@ class LoginTest(Unittest):
 
 
 if __name__ == "__main__":
-    repeat = 40
+    repeat = 5
     print()
     print("register", all(RegisterTest().unittest() for i in range(repeat)))
     print("login", all(LoginTest().unittest() for i in range(repeat)))
