@@ -102,7 +102,7 @@ func Login(context *gin.Context) {
 	//token := util.RandomHexString(16)
 	//假定生成token不会出错
 	token, err := common.GetToken(user)
-	log.Printf("token:%s", token)
+	log.Printf("token:%s",token)
 	//log.Println("token:",token)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"code": 500, "msg": "系统异常"})
@@ -132,22 +132,6 @@ func EnrollReceive(context *gin.Context) {
 	hope := cRP("hope")
 	hobbies := cRP("hobbies")
 
-	newFreshman := common.Fresh{
-		Name:         name,
-		Id:           id,
-		Major:        major,
-		Phone:        phone,
-		Grade:        grade,
-		Gender:       gender,
-		FirstChoice:  firstChoice,
-		SecondChoice: secondChoice,
-		Introduction: introduction,
-		Hope:         hope,
-		Hobbies:      hobbies,
-	}
-
-	db := common.GetDB()
-	db.Create(&newFreshman)
 }
 
 func GetUserformEmail(db *gorm.DB, email string) model.User {
