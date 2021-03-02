@@ -1,4 +1,4 @@
-from util.my_unit import Unittest, random_user_name, random_email, random_password
+from util.my_unit import Unittest, random_user_name, random_email, random_password, random_stu_id
 
 testClasses: list[Unittest] = []
 
@@ -86,7 +86,7 @@ class EnrollReceiveTest(Unittest):
         self.url = domain + "/enroll/receive"
         legal_data = {
             "name": random_user_name(),
-            "student_id": "202021100000",
+            "student_id": random_stu_id(),
             "major": "major",
             "phone": "phone",
             "grade": "grade",

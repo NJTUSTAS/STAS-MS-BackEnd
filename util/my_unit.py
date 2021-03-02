@@ -14,6 +14,10 @@ def random_user_name():
     return random_hex_str(8)
 
 
+def random_stu_id():
+    return f"{random.randint(20200000000, 20209999999)}"
+
+
 # 随机邮箱，测试用
 def random_email():
     address = random_hex_str(random.randint(4, 10))
