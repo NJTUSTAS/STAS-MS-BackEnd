@@ -1,9 +1,6 @@
-package common
+package model
 
-import (
-	"github.com/jinzhu/gorm"
-	//首先在这里添加初始化数据库的包，不然无法运行
-)
+import "github.com/jinzhu/gorm"
 
 type Fresh struct { //数据格式
 	gorm.Model

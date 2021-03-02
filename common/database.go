@@ -36,6 +36,7 @@ func InitDatabase() *gorm.DB {
 	}
 	//自动生成数据表(不存在即创建)
 	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Fresh{})
 	return db
 }
 
