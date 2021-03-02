@@ -54,5 +54,8 @@ class Unittest:
 
         # print(ret == expect)
 
+    def __call__(self):
+        self.unittest()
+
     def reshape(self, _):
         pass
