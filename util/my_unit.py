@@ -44,11 +44,11 @@ class Unittest:
         for data, expect in self.expected_io:
             response = requests.post(self.url, data)
             try:
-                ret = json.loads(response.text)
+                json_ret = json.loads(response.text)
             except json.decoder.JSONDecodeError:
-                ret = {}
-            if self.reshape(ret) != expect:
-                print(False, f"\ninput:{data}\nexpect:{expect}\nresponse:{response.text}")
+                json_ret = {}
+            if self.reshape(json_ret) != expect:
+                print(False, f"\ninput:{data}\nexpect:{expect}\nresponse:{json_ret}")
                 passed = False
         return passed
 

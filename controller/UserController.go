@@ -135,7 +135,7 @@ func EnrollReceive(context *gin.Context) {
 
 	newFreshman := model.Fresh{
 		Name:         name,
-		Id:           id,
+		StudentId:    id,
 		Major:        major,
 		Phone:        phone,
 		Grade:        grade,

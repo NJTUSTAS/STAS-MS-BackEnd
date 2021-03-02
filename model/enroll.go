@@ -6,7 +6,7 @@ type Fresh struct { //数据格式
 	gorm.Model
 	Name         string `gorm:"type:varchar(20);not null"` //姓名
 	Major        string `gorm:"type:varchar(15)"`          //专业
-	Id           string `gorm:"type:varchar(15);not null"` //学号
+	StudentId    string `gorm:"type:varchar(15);not null"` //学号
 	Phone        string `gorm:"type:varchar(11);not null"` //手机
 	Grade        string `gorm:"type:varchar(5)"`           //年级
 	Gender       string `gorm:"type:varchar(2)"`           //性别

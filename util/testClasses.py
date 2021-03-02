@@ -85,14 +85,14 @@ class EnrollReceiveTest(Unittest):
         self.name = "enroll.receive"
         self.url = domain + "/enroll/receive"
         legal_data = {
-            "name": "name",
-            "id": "id",
+            "name": random_user_name(),
+            "student_id": "202021100000",
             "major": "major",
             "phone": "phone",
             "grade": "grade",
-            "gender": "gender",
-            "firstChoice": "firstChoice",
-            "secondChoice": "secondChoice",
+            "gender": "男",
+            "firstChoice": "技术开发部",
+            "secondChoice": "",
             "introduction": "introduction",
             "hope": "hope",
             "hobbies": "hobbies",
