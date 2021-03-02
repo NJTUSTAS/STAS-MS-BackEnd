@@ -17,8 +17,7 @@ def random_user_name():
 # 随机邮箱，测试用
 def random_email():
     address = random_hex_str(random.randint(4, 10))
-    domain = random_hex_str(random.randint(1, 4)) + \
-             random.choice([".edu", ".com", ".cn"])
+    domain = random_hex_str(random.randint(1, 4)) + random.choice([".edu", ".com", ".cn"])
     return f"{address}@{domain}"
 
 
