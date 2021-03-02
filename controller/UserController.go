@@ -33,7 +33,7 @@ func Register(context *gin.Context) {
 		context.JSON(422, gin.H{
 			"code": 422,
 			"msg":  "illegal email address!"})
-		log.Printf("非法邮箱：%s，注册失败", email)
+		//log.Printf("非法邮箱：%s，注册失败", email)
 		//直接return，不进行数据库写入操作。
 		return
 	}
@@ -86,14 +86,14 @@ func Login(context *gin.Context) {
 	//合法性验证由前端完成，进行用户存在性验证
 	user := GetUserformEmail(db, email)
 	if user.ID == 0 {
-		log.Println("用户不存在")
+		//log.Println("用户不存在")
 		context.JSON(http.StatusUnprocessableEntity, gin.H{"code": 422, "msg": "用户不存在"})
 		return
 	}
 
 	//密码匹配验证
 	if !util.PasswordMatchQ(password, user.Hashword) {
-		log.Println("密码不匹配")
+		//log.Println("密码不匹配")
 		context.JSON(http.StatusBadRequest, gin.H{"code": 400, "msg": "用户名与密码不匹配"})
 		return
 	}
@@ -102,7 +102,7 @@ func Login(context *gin.Context) {
 	//token := util.RandomHexString(16)
 	//假定生成token不会出错
 	token, err := common.GetToken(user)
-	log.Printf("token:%s", token)
+	//log.Printf("token:%s", token)
 	//log.Println("token:",token)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"code": 500, "msg": "系统异常"})
