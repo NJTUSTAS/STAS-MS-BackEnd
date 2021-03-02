@@ -149,6 +149,10 @@ func EnrollReceive(context *gin.Context) {
 
 	db := common.GetDB()
 	db.Create(&newFreshman)
+	context.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "报名成功",
+	})
 }
 
 func GetUserformEmail(db *gorm.DB, email string) model.User {

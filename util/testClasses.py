@@ -98,5 +98,5 @@ class EnrollReceiveTest(Unittest):
             "hobbies": "hobbies",
         }
         dataset = (legal_data,)
-        expected_return = ("",)
+        expected_return = ({"code": 200, "msg": "报名成功", },)
         self.expected_io = zip(dataset, expected_return)
