@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-//我并不知道这个c字符串起到什么作用。
 var jwtKey = []byte("What does this did?")
 
 type Claims struct {

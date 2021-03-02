@@ -12,6 +12,7 @@ func main() {
 
 	//首先连接数据库并且在离开函数之前关闭连接（使用defer）
 	//defer 会在return之后调用，类似with open() as xxx这样
+	//注意：只有在main里才能defer关数据库，否则函数返回拿到的是关掉的数据库！
 	//数据库信息硬编码在InitDatabase()里，可能也有不好的地方但是也能用
 	//db := common.InitDatabase()
 	db := common.GetDB()

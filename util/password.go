@@ -4,11 +4,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-//// GetPasswordWithSalt 获取密码，密码和盐用:分隔
-//func GetPasswordWithSalt(plainPassword string) string {
-//	salt := RandomHexString(3)
-//	return fmt.Sprintf("%x:%s", hash(plainPassword, salt), salt)
-//}
 
 func Hash(plainPassword string) (string, error) {
 	cRet, err := bcrypt.GenerateFromPassword([]byte(plainPassword), bcrypt.DefaultCost)

@@ -22,7 +22,6 @@ func Register(context *gin.Context) {
 	name := context.PostForm("name")
 	email := context.PostForm("email")
 	password := context.PostForm("password")
-	//log.Println("注册密码", password)
 	passwordHashed, _ := util.Hash(password)
 	//如果出错这里要返回http500内部错误并且返回，但是懒得写了
 
@@ -65,7 +64,8 @@ func Register(context *gin.Context) {
 	}
 	//默认行为：创建数据库
 	//注意这里要传引用
-	db.Create(&model.User{Name: name, Email: email, Hashword: passwordHashed})
+	user := model.User{Name: name, Email: email, HashWord: passwordHashed}
+	db.Create(&user)
 }
 
 func Login(context *gin.Context) {
@@ -78,10 +78,6 @@ func Login(context *gin.Context) {
 	//从请求中获取数据。前端往后端请求的时候密码应该做一次哈希，因此这里直接用哈希后的密码。
 	email := context.PostForm("email")
 	password := context.PostForm("password")
-	//log.Println("登录密码", password)
-	passwordHashed, _ := util.Hash(password)
-	log.Println("登录hash：", passwordHashed)
-	//passwordHashed := Hash(password, context)
 
 	//合法性验证由前端完成，进行用户存在性验证
 	user := GetUserformEmail(db, email)
@@ -92,18 +88,14 @@ func Login(context *gin.Context) {
 	}
 
 	//密码匹配验证
-	if !util.PasswordMatchQ(password, user.Hashword) {
+	if !util.PasswordMatchQ(password, user.HashWord) {
 		//log.Println("密码不匹配")
 		context.JSON(http.StatusBadRequest, gin.H{"code": 400, "msg": "用户名与密码不匹配"})
 		return
 	}
 
 	//默认正常行为：发放token
-	//token := util.RandomHexString(16)
-	//假定生成token不会出错
 	token, err := common.GetToken(user)
-	//log.Printf("token:%s", token)
-	//log.Println("token:",token)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"code": 500, "msg": "系统异常"})
 		log.Printf("token err:%v", err)

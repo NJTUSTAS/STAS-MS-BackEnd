@@ -37,15 +37,15 @@ func InitDatabase() *gorm.DB {
 	//填充数据
 	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true",
 		username, password, host, port, database, charset)
-	//_忽略错误，正常情况下第二项应该是nil，否则提示报错信息
 	db, err := gorm.Open(driverName, args)
-	//输出错误信息
 	if err != nil {
 		panic(err)
 	}
+
 	//自动生成数据表(不存在即创建)
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Fresh{})
+
 	return db
 }
 
