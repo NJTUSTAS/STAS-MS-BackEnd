@@ -78,4 +78,25 @@ class LoginTest(Unittest):
         self.reshape = remake
 
 
-
+@add_to_test_list
+class EnrollReceiveTest(Unittest):
+    def __init__(self):
+        super().__init__()
+        self.name = "enroll.receive"
+        self.url = domain + "/enroll/receive"
+        legal_data = {
+            "name": "name",
+            "id": "id",
+            "major": "major",
+            "phone": "phone",
+            "grade": "grade",
+            "gender": "gender",
+            "firstChoice": "firstChoice",
+            "secondChoice": "secondChoice",
+            "introduction": "introduction",
+            "hope": "hope",
+            "hobbies": "hobbies",
+        }
+        dataset = (legal_data,)
+        expected_return = ("",)
+        self.expected_io = zip(dataset, expected_return)
