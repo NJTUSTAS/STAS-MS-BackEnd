@@ -8,5 +8,5 @@ type User struct {
 	gorm.Model
 	Name     string `gorm:"type:varchar(20);not null"`
 	Email    string `gorm:"type:varchar(110);not null;unique"`
-	HashWord string `gorm:"size:255;not null"`
+	Hashword string `gorm:"size:255;not null"`
 }

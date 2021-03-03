@@ -2,12 +2,14 @@ package main
 
 //gin，gorm和mysql都要用gin安装
 import (
-	"fmt"
 	"DemoProjectGO/common"
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	//不知道为啥ReleaseMode更慢
+	//gin.SetMode(gin.ReleaseMode)
 	fmt.Println("start working...")
 
 	//首先连接数据库并且在离开函数之前关闭连接（使用defer）

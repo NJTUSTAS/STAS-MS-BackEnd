@@ -41,7 +41,7 @@ func Register(context *gin.Context) {
 		context.JSON(422, gin.H{
 			"code": 422,
 			"msg":  "exist email address!"})
-		log.Println("邮箱已经注册过")
+		//log.Println("邮箱已经注册过")
 		//直接return，不进行数据库写入操作。
 		return
 	}
@@ -54,17 +54,17 @@ func Register(context *gin.Context) {
 			"code": 200,
 			"msg":  "no user name,auto generated.",
 			"name": name})
-		log.Printf("无用户名注册成功，生成用户名：%s", name)
+		//log.Printf("无用户名注册成功，生成用户名：%s", name)
 	} else {
 		//有用户名，成功注册
 		context.JSON(200, gin.H{
 			"code": 200,
 			"msg":  "register successful."})
-		log.Println("注册成功")
+		//log.Println("注册成功")
 	}
 	//默认行为：创建数据库
 	//注意这里要传引用
-	user := model.User{Name: name, Email: email, HashWord: passwordHashed}
+	user := model.User{Name: name, Email: email, Hashword: passwordHashed}
 	db.Create(&user)
 }
 
@@ -88,7 +88,7 @@ func Login(context *gin.Context) {
 	}
 
 	//密码匹配验证
-	if !util.PasswordMatchQ(password, user.HashWord) {
+	if !util.PasswordMatchQ(password, user.Hashword) {
 		//log.Println("密码不匹配")
 		context.JSON(http.StatusBadRequest, gin.H{"code": 400, "msg": "用户名与密码不匹配"})
 		return
