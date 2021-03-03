@@ -1,5 +1,9 @@
 # readme
 
+## 文档
+
+各api的文档，请参见 doc/api.md.
+
 ## 关于每个文件是干啥的
 
 - /common 一些通用文件

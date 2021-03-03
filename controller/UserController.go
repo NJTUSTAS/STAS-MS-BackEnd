@@ -36,7 +36,7 @@ func Register(context *gin.Context) {
 		//直接return，不进行数据库写入操作。
 		return
 	}
-	//电话重复性验证
+	//邮箱重复性验证
 	if GetUserformEmail(db, email).ID != 0 {
 		context.JSON(422, gin.H{
 			"code": 422,
@@ -114,7 +114,7 @@ func EnrollReceive(context *gin.Context) {
 	//读入数据
 	cRP := context.Request.PostFormValue
 	name := cRP("name")
-	id := cRP("id")
+	studentID := cRP("studentId")
 	major := cRP("major")
 	phone := cRP("phone")
 	grade := cRP("grade")
@@ -127,7 +127,7 @@ func EnrollReceive(context *gin.Context) {
 
 	newFreshman := model.Fresh{
 		Name:         name,
-		StudentId:    id,
+		StudentId:    studentID,
 		Major:        major,
 		Phone:        phone,
 		Grade:        grade,
