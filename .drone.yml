@@ -1,0 +1,30 @@
+---
+kind: pipeline
+type: docker
+name: stas-backend
+
+clone:
+  disable: true
+steps:
+  - name: clone
+    image: harbor.jinhun.moe/library/github:latest
+    commands:
+      - git clone https://github.com/NJTUSTAS/STAS-MS-BackEnd .
+      - echo ${DRONE_BRANCH}
+      - git checkout ${DRONE_BRANCH}
+      - ls -al
+  - name: build
+    image: harbor.jinhun.moe/library/docker-drone:latest
+    settings:
+      dockerfile: Dockerfile
+      tag:
+        - latest
+        - ${DRONE_BUILD_NUMBER}
+      insecure: true
+      registry: https://harbor.jinhun.moe
+      repo: harbor.jinhun.moe/library/online-backend
+  - name: deploy
+    image: harbor.jinhun.moe/library/deploy31
+    settings:
+      script:
+        - docker service update --publish-add 8080:8080 --image harbor.jinhun.moe/library/stas-backend:latest stas_backend
