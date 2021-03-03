@@ -10,7 +10,7 @@
 
 - 空邮箱：{"code": 422,  "msg":"illegal email address!"}
 - 重复邮箱：{"code": 422,"msg":"exist email address!"}
-- 缺用户名：{"code": 200,"msg":  "no user name,auto generated.","name": name}
+- 缺用户名：{"code": 200,"msg":  "no username,auto generated.","name": name}
   - 缺失用户名会自动生成16位随机用户名
 - 成功：{"code": 200,"msg":  "register successful."}
 
