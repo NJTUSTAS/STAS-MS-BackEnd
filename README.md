@@ -42,8 +42,8 @@
 
 [![Build Status](https://drone.njtechstas.top/api/badges/NJTUSTAS/STAS-MS-BackEnd/status.svg)](https://drone.njtechstas.top/NJTUSTAS/STAS-MS-BackEnd)
 
-- CI的操作非常简单，整体流程是 drone 打完包，然后推到私有镜像 harbor，最后调高可用 ~~k3s~~(刚刚炸了先用swarm) swarm 重新编排容器
+- CI的操作非常简单，整体流程是 drone 打完包，然后推到私有镜像 harbor，最后调高可用 ~~k3s~~(刚刚炸了先用swarm) swarm 集群重新编排容器
 
-- 每次发生操作，都会自动部署到一堆服务器上，不过我用nginx负载均衡到202.119.245.31的80端口了，前端访问202.119.245.31即可
+- 每次发生操作，都会自动部署到一堆服务器上，不过我用nginx负载均衡到202.119.245.31的80端口了，前端访问202.119.245.31:80即可
 
 - drone的后台是https://drone.njtechstas.top
