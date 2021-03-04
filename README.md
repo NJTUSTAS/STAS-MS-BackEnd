@@ -38,3 +38,12 @@
   
 - test.py 测试api的py脚本
 
+## CI-CD
+
+[![Build Status](https://drone.njtechstas.top/api/badges/NJTUSTAS/STAS-MS-BackEnd/status.svg)](https://drone.njtechstas.top/NJTUSTAS/STAS-MS-BackEnd)
+
+- CI的操作非常简单，整体流程是 drone 打完包，然后推到私有镜像 harbor，最后调用 ~~k3s~~(刚刚炸了先用swarm) swarm 重新编排容器
+
+- 每次发生提交，都会自动部署到202.119.245.31上，后端使用的8080端口无法在公网访问，不过我用nginx代理到80端口了
+
+- drone的后台是https://drone.njtechstas.top
