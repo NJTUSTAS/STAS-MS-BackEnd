@@ -4,7 +4,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-
+// Hash 对前端传来的密码进行带盐哈希加密
 func Hash(plainPassword string) (string, error) {
 	cRet, err := bcrypt.GenerateFromPassword([]byte(plainPassword), bcrypt.DefaultCost)
 	//c表示是[]byte 类型，即c风格字符串

@@ -12,6 +12,8 @@ import (
 )
 
 //业务逻辑
+
+//Register work as its name
 func Register(context *gin.Context) {
 	//注册提供【用户名，邮箱，哈希密码三个参数】
 	//用户名为空则随机生成用户名
@@ -68,6 +70,7 @@ func Register(context *gin.Context) {
 	db.Create(&user)
 }
 
+//Login work as its name
 func Login(context *gin.Context) {
 	//提供邮箱和密码；
 	//邮箱应当存在，否则报错
@@ -108,7 +111,7 @@ func Login(context *gin.Context) {
 	})
 }
 
-//招新
+//EnrollReceive 招新收集表
 func EnrollReceive(context *gin.Context) {
 	//目前没弄清楚context.Request.PostFormValue和context.PostForm之间有啥区别
 	//读入数据
