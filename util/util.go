@@ -24,3 +24,12 @@ func GetUserFormEmail(email string) model.User {
 	return user
 }
 
+// GetUserFormID works as its name
+func GetUserFormID(userID uint) model.User {
+	//不存在为0
+	var user model.User
+	//查找数据库并且把找到的第一个结果传给user
+	common.GetDB().First(&user, userID)
+	//user.ID是在默认值里的，如果找不到那么ID就是0
+	return user
+}
