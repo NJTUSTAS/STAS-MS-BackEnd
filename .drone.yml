@@ -27,4 +27,4 @@ steps:
     image: harbor.jinhun.moe/library/deploy31
     settings:
       script:
-        - docker service update --publish-add 8080:8080 --image harbor.jinhun.moe/library/stas-backend:latest stas_backend
+        - docker service update --image harbor.jinhun.moe/library/stas-backend:${DRONE_BUILD_NUMBER} stas_backend
