@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 )
 
 //业务逻辑
@@ -39,7 +38,7 @@ func Register(context *gin.Context) {
 		return
 	}
 	//邮箱重复性验证
-	if GetUserformEmail(db, email).ID != 0 {
+	if util.GetUserformEmail(email).ID != 0 {
 		context.JSON(422, gin.H{
 			"code": 422,
 			"msg":  "exist email address!"})
@@ -76,14 +75,13 @@ func Login(context *gin.Context) {
 	//邮箱应当存在，否则报错
 	//密码应当匹配。否则报错
 	//返回token
-	db := common.GetDB()
 
 	//从请求中获取数据。前端往后端请求的时候密码应该做一次哈希，因此这里直接用哈希后的密码。
 	email := context.PostForm("email")
 	password := context.PostForm("password")
 
 	//合法性验证由前端完成，进行用户存在性验证
-	user := GetUserformEmail(db, email)
+	user := util.GetUserformEmail(email)
 	if user.ID == 0 {
 		//log.Println("用户不存在")
 		context.JSON(http.StatusUnprocessableEntity, gin.H{"code": 422, "msg": "用户不存在"})
@@ -148,13 +146,4 @@ func EnrollReceive(context *gin.Context) {
 		"code": 200,
 		"msg":  "报名成功",
 	})
-}
-
-func GetUserformEmail(db *gorm.DB, email string) model.User {
-	//不存在为0
-	var user model.User
-	//查找数据库并且把找到的第一个结果传给user
-	db.Where("email = ?", email).First(&user)
-	//user.ID是在默认值里的，如果找不到那么ID就是0
-	return user
 }
