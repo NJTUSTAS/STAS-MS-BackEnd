@@ -14,7 +14,7 @@ steps:
       - git checkout ${DRONE_BRANCH}
       - ls -al
   - name: build
-    image: harbor.jinhun.moe/library/docker-drone:latest
+    image: harbor.jinhun.moe/library/stas-drone
     settings:
       dockerfile: Dockerfile
       tag:
