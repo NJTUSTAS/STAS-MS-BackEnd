@@ -22,9 +22,10 @@ steps:
         - ${DRONE_BUILD_NUMBER}
       insecure: true
       registry: https://harbor.jinhun.moe
-      repo: harbor.jinhun.moe/library/online-backend
+      repo: harbor.jinhun.moe/library/docker-backend
   - name: deploy
     image: harbor.jinhun.moe/library/deploy31
     settings:
       script:
         - docker pull harbor.jinhun.moe/library/stas-backend:${DRONE_BUILD_NUMBER} && docker service update --image harbor.jinhun.moe/library/stas-backend:${DRONE_BUILD_NUMBER} stas_backend
+
