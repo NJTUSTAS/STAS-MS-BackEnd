@@ -2,6 +2,7 @@ from util.my_unit import Unittest, random_user_name, random_email, random_passwo
 
 testClasses: list[Unittest] = []
 
+# domain = "http://localhost:8080"
 domain = "http://localhost:8080"
 
 
