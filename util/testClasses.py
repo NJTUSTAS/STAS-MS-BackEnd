@@ -3,7 +3,8 @@ from util.my_unit import Unittest, random_user_name, random_email, random_passwo
 testClasses: list[Unittest] = []
 
 # domain = "http://localhost:8080"
-domain = "http://localhost:8080"
+# 已经在远程服务器上部署
+domain = "http://202.119.245.31:80"
 
 
 # 这是一个装饰器。他抓取一个类，对这个类做一些事情，然后返回这个类给调用装饰器的东西

@@ -7,8 +7,8 @@
 ## 关于每个文件是干啥的
 
 - /common 一些通用文件
-    - database.go：数据库io相关
-    - jwt.go：token发放
+  - database.go：数据库io相关
+  - jwt.go：token发放
 
 - /controller
 
@@ -46,4 +46,4 @@
 
 - 每次发生操作，都会自动部署到一堆服务器上，不过我用nginx负载均衡到202.119.245.31的80端口了，前端访问202.119.245.31:80即可
 
-- drone的后台是https://drone.njtechstas.top
+- drone的后台是<https://drone.njtechstas.top>
