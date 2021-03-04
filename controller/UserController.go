@@ -38,7 +38,7 @@ func Register(context *gin.Context) {
 		return
 	}
 	//邮箱重复性验证
-	if util.GetUserformEmail(email).ID != 0 {
+	if util.GetUserFormEmail(email).ID != 0 {
 		context.JSON(422, gin.H{
 			"code": 422,
 			"msg":  "exist email address!"})
@@ -81,7 +81,7 @@ func Login(context *gin.Context) {
 	password := context.PostForm("password")
 
 	//合法性验证由前端完成，进行用户存在性验证
-	user := util.GetUserformEmail(email)
+	user := util.GetUserFormEmail(email)
 	if user.ID == 0 {
 		//log.Println("用户不存在")
 		context.JSON(http.StatusUnprocessableEntity, gin.H{"code": 422, "msg": "用户不存在"})
