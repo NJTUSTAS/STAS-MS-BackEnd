@@ -1,4 +1,4 @@
-from util.my_unit import Unittest, random_user_name, random_email, random_password, random_stu_id
+from my_unit import Unittest, random_user_name, random_email, random_password, random_stu_id
 
 testClasses: list[Unittest] = []
 
@@ -8,7 +8,7 @@ domain = "http://202.119.245.31:80"
 
 
 # 这是一个装饰器。他抓取一个类，对这个类做一些事情，然后返回这个类给调用装饰器的东西
-def add_to_test_list(testcases):
+def add_to_test_list(testcases:Unittest)->Unittest:
     testClasses.append(testcases)
     return testcases
 
@@ -72,7 +72,7 @@ class LoginTest(Unittest):
 
         def remake(data: dict) -> dict:
             if "data" in data:
-                # print("token:", data["data"]["token"])
+                print("token:", data["data"]["token"])
                 data["data"]["token"] = ""
             return data
 
