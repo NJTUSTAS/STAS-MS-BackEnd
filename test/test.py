@@ -11,7 +11,7 @@ self.reshape是一个函数，在包含不确定返回值的情况下将不确�
 """
 
 # 测试域名
-from util.testClasses import *
+from testClasses import *
 
 
 if __name__ == "__main__":

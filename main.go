@@ -27,5 +27,6 @@ func main() {
 	router = CollectRoute(router)
 
 	//上面是业务逻辑，现在开始运行，默认端口是8080
+	fmt.Println("开始运行")
 	_ = router.Run(":8080")
 }
