@@ -147,3 +147,12 @@ func EnrollReceive(context *gin.Context) {
 		"msg":  "报名成功",
 	})
 }
+
+// Info to get user info
+func Info(context *gin.Context) {
+	user, exist := context.Get("user")
+	if !exist {
+		context.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "not login yet."})
+	}
+	context.JSON(http.StatusOK, gin.H{"code": 200, "data": gin.H{"user": user}})
+}
