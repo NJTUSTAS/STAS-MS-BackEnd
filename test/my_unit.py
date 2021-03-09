@@ -32,20 +32,19 @@ def random_password():
 
 class Unittest:
     def __init__(self):
-        self.reshape = lambda x: x
-        self.expected_io = ""
-        self.url = ""
+        self.method=requests.post
 
     #    指定数据测试
     def single_test(self, data):
-        response = requests.post(self.url, data)
+        response = self.method(self.url, data)
+        return response
         # print(response.text)
 
     # 批量测试
     def unittest(self):
         passed = True
         for data, expect in self.expected_io:
-            response = requests.post(self.url, data)
+            response = self.method(self.url, data)
             try:
                 json_ret = json.loads(response.text)
             except json.decoder.JSONDecodeError:
@@ -61,4 +60,4 @@ class Unittest:
         self.unittest()
 
     def reshape(self, _):
-        pass
+        return _

@@ -15,7 +15,7 @@ from testClasses import *
 
 
 if __name__ == "__main__":
-    repeat = 1
+    repeat = 5
     print()
     for case in testClasses:
         print(case().name, all(case().unittest() for i in range(repeat)))
