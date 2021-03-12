@@ -132,7 +132,7 @@ class EnrollReceiveTest(Unittest):
     def __init__(self):
         super().__init__()
         self.name = "enroll.receive"
-        self.url = domain + "/enroll/receive"
+        self.url = domain + "/api/enroll/receive"
         legal_data = {
             "name": random_user_name(),
             "student_id": random_stu_id(),
