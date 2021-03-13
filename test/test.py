@@ -13,10 +13,9 @@ self.reshape是一个函数，在包含不确定返回值的情况下将不确�
 # 测试域名
 from testClasses import *
 
-
+repeat = 1
+print(f"开始测试,重复测试次数：{repeat}")
 if __name__ == "__main__":
-    repeat = 5
     print()
-    for case in testClasses:
-        print(case().name, all(case().unittest() for i in range(repeat)))
-    # print("login", all(LoginTest().unittest() for i in range(repeat)))
+    for cls in TestUnit.__subclasses__():
+        cls().test(repeat)
