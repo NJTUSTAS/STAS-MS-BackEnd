@@ -13,13 +13,14 @@ class RegisterTest(TestUnit):
 
     @staticmethod
     def expect_io():
-        raw_data = {"name": random_user_name(), "email": random_email(), "password": random_password()}
-        email_data = {**raw_data, "email": ""}
-        dup_email_data = {**raw_data, "email": "1"}
-        wrn_emp_name_data = {**raw_data, "name": "", "email": random_email()}
+        raw_data = {"Name": random_user_name(), "Email": random_email(), "Password": random_password()}
+        email_data = {**raw_data, "Email": ""}
+        dup_email_data = {**raw_data, "Email": "1"}
+        wrn_emp_name_data = {**raw_data, "Name": "", "Email": random_email()}
 
         # 输入数据顺序
-        given_input = (raw_data, dup_email_data, email_data, wrn_emp_name_data)
+        given_input = ({"data": _} for _ in
+                       (raw_data, dup_email_data, email_data, wrn_emp_name_data))
         # 期望输出数据
         expected_return = (
             {"code": 200, "msg": "register successful."},
@@ -44,16 +45,16 @@ class LoginTest(TestUnit):
 
     def expect_io(self) -> zip:
         # 注册账号
-        legal_data = {"name": random_user_name(), "email": random_email(), "password": random_password()}
-        response = RegisterTest().pre_call(legal_data)
-        assert response == {"code": 200, "msg": "register successful."}
+        legal_data = {"Name": random_user_name(), "Email": random_email(), "Password": random_password()}
+        response = RegisterTest().pre_call({"data": legal_data})
+        assert response == {"code": 200, "msg": "register successful."} or print(f"{response=}")
 
         raw_data = legal_data
-        emp_email_data = {**raw_data, "email": ""}
-        err_password_data = {**raw_data, "password": ""}
+        emp_email_data = {**raw_data, "Email": ""}
+        err_password_data = {**raw_data, "Password": ""}
 
         # 输入数据顺序
-        given_input = (raw_data, emp_email_data, err_password_data)
+        given_input = ({"data": _} for _ in (raw_data, emp_email_data, err_password_data))
         # 期望输出数据
         expected_return = ({"code": 200, "data": {"token": None}, "msg": "登录成功"},
                            {"code": 422, "msg": "用户不存在"},
@@ -79,16 +80,29 @@ class InfoTest(TestUnit):
     @staticmethod
     def expect_io():
         # 注册并登录
-        legal_data = {"name": random_user_name(), "email": random_email(), "password": random_password()}
-        RegisterTest().pre_call(legal_data)
+        user = {"Name": random_user_name(), "Email": random_email(), "Password": random_password()}
+        legal_data = {"data": user}
+        register_response = RegisterTest().pre_call(legal_data)
+        assert register_response["msg"] == 'register successful.' or false_log(
+            "注册失败\n"
+            f"{legal_data=}\n"
+            f"\n{register_response=}")
         response: dict = LoginTest().pre_call(legal_data)
-        assert response["msg"] == "登录成功"
 
-        dataset = ({}, legal_data)
+        assert response["msg"] == "登录成功" or false_log(
+            f"{legal_data=}"
+            f"{register_response=}\n"
+            f"{response=}")
 
-        del (legal_return := dict(legal_data))["password"]
-        out = ({"code": 401, "msg": "权限不足"},
-               {"code": 200, "data": legal_return})
+        token = response["data"]["token"]
+        # print(token)
+
+        legal_input = {"headers": {"Authorization": token}}
+        dataset = (legal_input, {"headers": {}},)
+
+        del (user_without_password := user)["Password"]
+        out = ({"code": 200, "data": {"user": user_without_password}},
+               {"code": 401, "msg": "权限不足"},)
         return zip(dataset, out)
 
     @staticmethod
@@ -99,7 +113,7 @@ class InfoTest(TestUnit):
             response["data"]["user"].pop("CreatedAt")
             response["data"]["user"].pop("UpdatedAt")
             response["data"]["user"].pop("DeletedAt")
-            response["data"]["user"].pop("Password")
+            response["data"]["user"].pop("Hashword")
         return response
 
 
@@ -125,6 +139,6 @@ class EnrollReceiveTest(TestUnit):
             "hope": "hope",
             "hobbies": "hobbies",
         }
-        dataset = (legal_data,)
+        dataset = ({"data": _} for _ in (legal_data,))
         expected_return = ({"code": 200, "msg": "报名成功", },)
         return zip(dataset, expected_return)

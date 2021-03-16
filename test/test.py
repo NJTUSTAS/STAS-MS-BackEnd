@@ -10,12 +10,15 @@ self.expected_io包含各种情况下每一组输入对应的相对输出,应当
 self.reshape是一个函数，在包含不确定返回值的情况下将不确定的内容转换为空字符串。
 """
 
-# 测试域名
 from testClasses import *
 
-repeat = 1
-print(f"开始测试,重复测试次数：{repeat}")
+# TestUnit.domain = "http://202.119.245.31:80"
+TestUnit.domain = "http://localhost:8080"
+TestUnit.repeat = 10
 if __name__ == "__main__":
-    print()
-    for cls in TestUnit.__subclasses__():
-        cls().test(repeat)
+    print(f"开始测试,重复测试次数：{TestUnit.repeat}")
+    # InfoTest().test()
+    passedTest = all(testcls().test() for testcls in TestUnit.__subclasses__())
+    print("测试完成")
+    if passedTest:
+        print("所有测试都成功通过！")
