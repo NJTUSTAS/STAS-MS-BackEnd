@@ -121,7 +121,7 @@ class EnrollReceiveTest(TestUnit):
     def __init__(self):
         super().__init__()
         self.name = "enroll.receive"
-        self.url = TestUnit.domain + "/enroll/receive"
+        self.url = TestUnit.domain + "/api/enroll/receive"
         self.method = requests.post
 
     @staticmethod
