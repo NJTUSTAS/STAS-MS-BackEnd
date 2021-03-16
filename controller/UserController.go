@@ -4,6 +4,7 @@ import (
 	"DemoProjectGO/common"
 	"DemoProjectGO/model"
 	"DemoProjectGO/util"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -20,9 +21,9 @@ func Register(context *gin.Context) {
 	db := common.GetDB()
 
 	//从请求中获取数据。前端往后端请求的时候密码应该做一次哈希，因此这里直接用哈希后的密码。
-	name := context.PostForm("name")
-	email := context.PostForm("email")
-	password := context.PostForm("password")
+	name := context.PostForm("Name")
+	email := context.PostForm("Email")
+	password := context.PostForm("Password")
 	passwordHashed, _ := util.Hash(password)
 	//如果出错这里要返回http500内部错误并且返回，但是懒得写了
 
@@ -30,6 +31,7 @@ func Register(context *gin.Context) {
 	//邮箱合法性验证
 	if len(email) == 0 {
 		//这里假设只要求非空
+		fmt.Println("print email:", email)
 		context.JSON(422, gin.H{
 			"code": 422,
 			"msg":  "illegal email address!"})
@@ -77,8 +79,8 @@ func Login(context *gin.Context) {
 	//返回token
 
 	//从请求中获取数据。前端往后端请求的时候密码应该做一次哈希，因此这里直接用哈希后的密码。
-	email := context.PostForm("email")
-	password := context.PostForm("password")
+	email := context.PostForm("Email")
+	password := context.PostForm("Password")
 
 	//合法性验证由前端完成，进行用户存在性验证
 	user := util.GetUserFormEmail(email)
@@ -151,8 +153,10 @@ func EnrollReceive(context *gin.Context) {
 // Info to get user info
 func Info(context *gin.Context) {
 	user, exist := context.Get("user")
+	fmt.Println("user,exist=", user, exist)
 	if !exist {
 		context.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "not login yet."})
+		return
 	}
 	context.JSON(http.StatusOK, gin.H{"code": 200, "data": gin.H{"user": user}})
 }
