@@ -2,6 +2,7 @@ package controller
 
 import (
 	"DemoProjectGO/common"
+	"DemoProjectGO/controller/response"
 	"DemoProjectGO/model"
 	"DemoProjectGO/util"
 	"fmt"
@@ -31,20 +32,14 @@ func Register(context *gin.Context) {
 	//邮箱合法性验证
 	if len(email) == 0 {
 		//这里假设只要求非空
-		fmt.Println("print email:", email)
-		context.JSON(422, gin.H{
-			"code": 422,
-			"msg":  "illegal email address!"})
+		response.ResponseJson(context, 422, 422, nil, "illegal email address!")
 		//log.Printf("非法邮箱：%s，注册失败", email)
 		//直接return，不进行数据库写入操作。
 		return
 	}
 	//邮箱重复性验证
 	if util.GetUserFormEmail(email).ID != 0 {
-		context.JSON(422, gin.H{
-			"code": 422,
-			"msg":  "exist email address!"})
-		//log.Println("邮箱已经注册过")
+		response.ResponseJson(context, 422, 422, nil, "exist email address!")
 		//直接return，不进行数据库写入操作。
 		return
 	}
@@ -53,16 +48,12 @@ func Register(context *gin.Context) {
 	if len(name) == 0 {
 		//允许不取名，系统生成16位随机16进制字符。
 		name = util.RandomHexString(16)
-		context.JSON(200, gin.H{
-			"code": 200,
-			"msg":  "no user name,auto generated.",
-			"name": name})
+		response.Success(context, gin.H{"name": name}, "no user name,auto generated.")
+
 		//log.Printf("无用户名注册成功，生成用户名：%s", name)
 	} else {
 		//有用户名，成功注册
-		context.JSON(200, gin.H{
-			"code": 200,
-			"msg":  "register successful."})
+		response.Success(context, nil, "register successful.")
 		//log.Println("注册成功")
 	}
 	//默认行为：创建数据库
@@ -86,29 +77,27 @@ func Login(context *gin.Context) {
 	user := util.GetUserFormEmail(email)
 	if user.ID == 0 {
 		//log.Println("用户不存在")
-		context.JSON(http.StatusUnprocessableEntity, gin.H{"code": 422, "msg": "用户不存在"})
+		response.ResponseJson(context, 422, 422, nil, "用户不存在")
 		return
 	}
 
 	//密码匹配验证
 	if !util.PasswordMatchQ(password, user.Hashword) {
 		//log.Println("密码不匹配")
-		context.JSON(http.StatusBadRequest, gin.H{"code": 400, "msg": "用户名与密码不匹配"})
+		response.ResponseJson(context, 400, 400, nil, "用户名与密码不匹配")
 		return
 	}
 
 	//默认正常行为：发放token
 	token, err := common.GetToken(user)
+	//出错处理
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"code": 500, "msg": "系统异常"})
+		response.ResponseJson(context, 500, 500, nil, "系统异常")
 		log.Printf("token err:%v", err)
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{
-		"code": 200,
-		"data": gin.H{"token": token},
-		"msg":  "登录成功",
-	})
+
+	response.Success(context, gin.H{"token": token}, "登录成功")
 }
 
 //EnrollReceive 招新收集表
@@ -144,10 +133,7 @@ func EnrollReceive(context *gin.Context) {
 
 	db := common.GetDB()
 	db.Create(&newFreshman)
-	context.JSON(http.StatusOK, gin.H{
-		"code": 200,
-		"msg":  "报名成功",
-	})
+	response.ResponseJson(context, 200, 200, nil, "报名成功")
 }
 
 // Info to get user info
@@ -155,8 +141,9 @@ func Info(context *gin.Context) {
 	user, exist := context.Get("user")
 	fmt.Println("user,exist=", user, exist)
 	if !exist {
-		context.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "not login yet."})
+		response.Abort(context, nil, "not login yet.")
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{"code": 200, "data": gin.H{"user": util.ToUserOutput(user.(model.User))}})
+	response.ResponseJson(context, http.StatusOK, 200,
+		gin.H{"user": util.ToUserOutput(user.(model.User))}, "")
 }

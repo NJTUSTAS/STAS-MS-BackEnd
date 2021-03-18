@@ -57,6 +57,8 @@ class TestUnit:
                 raise UnsetAddressError(self.name)
             if "'NoneType' object is not callable" in error.args:
                 raise UnsetMethodError(self.name)
+        except Exception as e:
+            print(e)
 
     def single_test(self, input_data: dict, expect: dict) -> bool:
         response = self.method(self.url, **input_data)

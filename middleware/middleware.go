@@ -2,17 +2,16 @@ package middleware
 
 import (
 	"DemoProjectGO/common"
+	"DemoProjectGO/controller/response"
 	"DemoProjectGO/util"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 //AuthMiddleware did sth i know less.
 func AuthMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		Abort401 := func() {
-			context.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "权限不足"})
-			// 中断请求
+			response.Abort(context, nil, "权限不足")
 			context.Abort()
 		}
 

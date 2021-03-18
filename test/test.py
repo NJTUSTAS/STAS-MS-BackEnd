@@ -14,11 +14,13 @@ from testClasses import *
 
 # TestUnit.domain = "http://202.119.245.31:80"
 TestUnit.domain = "http://localhost:8080"
-TestUnit.repeat = 10
+TestUnit.repeat = 5
 if __name__ == "__main__":
     print(f"开始测试,重复测试次数：{TestUnit.repeat}")
     # InfoTest().test()
     passedTest = all(testcls().test() for testcls in TestUnit.__subclasses__())
-    print("测试完成")
+    print("测试结束")
     if passedTest:
         print("所有测试都成功通过！")
+    else:
+        print("未通过测试")
