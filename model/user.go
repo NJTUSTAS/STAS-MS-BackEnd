@@ -10,3 +10,8 @@ type User struct {
 	Email    string `gorm:"type:varchar(110);not null;unique"`
 	Hashword string `gorm:"size:255;not null"`
 }
+
+type UserOutput struct {
+	Name  string `json:"Name"`
+	Email string `json:"Email"`
+}

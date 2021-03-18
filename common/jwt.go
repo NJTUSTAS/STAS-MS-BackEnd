@@ -36,8 +36,8 @@ func GetToken(User model.User) (string, error) {
 func ParseToken(sToken string) (*jwt.Token, *Claims) {
 	claims := &Claims{}
 	// 无视错误，我也不知道有啥错误，所以不处理
-	token, _ := jwt.ParseWithClaims(sToken, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
-	})
+	token, _ := jwt.ParseWithClaims(sToken, claims,
+		func(token *jwt.Token) (interface{}, error) { return jwtKey, nil },
+	)
 	return token, claims
 }

@@ -158,5 +158,5 @@ func Info(context *gin.Context) {
 		context.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "not login yet."})
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{"code": 200, "data": gin.H{"user": user}})
+	context.JSON(http.StatusOK, gin.H{"code": 200, "data": gin.H{"user": util.ToUserOutput(user.(model.User))}})
 }
