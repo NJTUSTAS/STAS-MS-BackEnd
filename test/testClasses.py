@@ -83,13 +83,13 @@ class InfoTest(TestUnit):
         user = {"Name": random_user_name(), "Email": random_email(), "Password": random_password()}
         legal_data = {"data": user}
         register_response = RegisterTest().pre_call(legal_data)
-        assert register_response["msg"] == 'register successful.' or false_log(
+        assert register_response["msg"] == 'register successful.' or print(
             "注册失败\n"
             f"{legal_data=}\n"
             f"\n{register_response=}")
         response: dict = LoginTest().pre_call(legal_data)
 
-        assert response["msg"] == "登录成功" or false_log(
+        assert response["msg"] == "登录成功" or print(
             f"{legal_data=}"
             f"{register_response=}\n"
             f"{response=}")
@@ -104,17 +104,6 @@ class InfoTest(TestUnit):
         out = ({"code": 200, "data": {"user": user_without_password}},
                {"code": 401, "msg": "权限不足"},)
         return zip(dataset, out)
-
-    @staticmethod
-    def format(response: dict) -> dict:
-        if "data" in response and "user" in response["data"]:
-            # print("token:", data["data"]["token"])
-            response["data"]["user"].pop("ID")
-            response["data"]["user"].pop("CreatedAt")
-            response["data"]["user"].pop("UpdatedAt")
-            response["data"]["user"].pop("DeletedAt")
-            response["data"]["user"].pop("Hashword")
-        return response
 
 
 class EnrollReceiveTest(TestUnit):
