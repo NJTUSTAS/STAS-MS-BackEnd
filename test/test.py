@@ -10,11 +10,17 @@ self.expected_io包含各种情况下每一组输入对应的相对输出,应当
 self.reshape是一个函数，在包含不确定返回值的情况下将不确定的内容转换为空字符串。
 """
 
+from sys import argv
+
 from testClasses import *
 
-# TestUnit.domain = "http://202.119.245.31:80"
 TestUnit.domain = "http://localhost:8080"
 TestUnit.repeat = 5
+
+# TestUnit.domain = "http://202.119.245.31:80"
+TestUnit.domain = argv[1]
+TestUnit.repeat = int(argv[2])
+
 if __name__ == "__main__":
     print(f"开始测试,重复测试次数：{TestUnit.repeat}")
     # InfoTest().test()
