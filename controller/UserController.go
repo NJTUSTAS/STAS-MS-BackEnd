@@ -2,10 +2,9 @@ package controller
 
 import (
 	"DemoProjectGO/common"
-	"DemoProjectGO/controller/response"
 	"DemoProjectGO/model"
+	"DemoProjectGO/response"
 	"DemoProjectGO/util"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -32,14 +31,14 @@ func Register(context *gin.Context) {
 	//邮箱合法性验证
 	if len(email) == 0 {
 		//这里假设只要求非空
-		response.ResponseJson(context, 422, 422, nil, "illegal email address!")
+		response.ReturnJson(context, 422, 422, nil, "illegal email address!")
 		//log.Printf("非法邮箱：%s，注册失败", email)
 		//直接return，不进行数据库写入操作。
 		return
 	}
 	//邮箱重复性验证
 	if util.GetUserFormEmail(email).ID != 0 {
-		response.ResponseJson(context, 422, 422, nil, "exist email address!")
+		response.ReturnJson(context, 422, 422, nil, "exist email address!")
 		//直接return，不进行数据库写入操作。
 		return
 	}
@@ -77,14 +76,14 @@ func Login(context *gin.Context) {
 	user := util.GetUserFormEmail(email)
 	if user.ID == 0 {
 		//log.Println("用户不存在")
-		response.ResponseJson(context, 422, 422, nil, "用户不存在")
+		response.ReturnJson(context, 422, 422, nil, "用户不存在")
 		return
 	}
 
 	//密码匹配验证
 	if !util.PasswordMatchQ(password, user.Hashword) {
 		//log.Println("密码不匹配")
-		response.ResponseJson(context, 400, 400, nil, "用户名与密码不匹配")
+		response.ReturnJson(context, 400, 400, nil, "用户名与密码不匹配")
 		return
 	}
 
@@ -92,7 +91,7 @@ func Login(context *gin.Context) {
 	token, err := common.GetToken(user)
 	//出错处理
 	if err != nil {
-		response.ResponseJson(context, 500, 500, nil, "系统异常")
+		response.ReturnJson(context, 500, 500, nil, "系统异常")
 		log.Printf("token err:%v", err)
 		return
 	}
@@ -133,17 +132,29 @@ func EnrollReceive(context *gin.Context) {
 
 	db := common.GetDB()
 	db.Create(&newFreshman)
-	response.ResponseJson(context, 200, 200, nil, "报名成功")
+	response.ReturnJson(context, 200, 200, nil, "报名成功")
 }
 
 // Info to get user info
 func Info(context *gin.Context) {
 	user, exist := context.Get("user")
-	fmt.Println("user,exist=", user, exist)
+	//fmt.Println("user,exist=", user, exist)
 	if !exist {
 		response.Abort(context, nil, "not login yet.")
 		return
 	}
-	response.ResponseJson(context, http.StatusOK, 200,
+	response.ReturnJson(context, http.StatusOK, 200,
 		gin.H{"user": util.ToUserOutput(user.(model.User))}, "")
+}
+
+func Note(context *gin.Context) {
+	name := context.Request.PostFormValue("name")
+	note := context.Request.PostFormValue("data")
+	newNote := model.Note{
+		Name: name,
+		Data: note,
+	}
+	db:=common.GetDB()
+	db.Create(&newNote)
+	response.Success(context,nil,"submitted")
 }

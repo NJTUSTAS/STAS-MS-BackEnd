@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"DemoProjectGO/common"
-	"DemoProjectGO/controller/response"
+	"DemoProjectGO/response"
 	"DemoProjectGO/util"
 	"github.com/gin-gonic/gin"
 )

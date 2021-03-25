@@ -137,5 +137,28 @@ class EnrollReceiveTest(TestUnit):
             "hobbies": "hobbies",
         }
         dataset = ({"data": _} for _ in (legal_data,))
-        expected_return = ({"code": 200,"data": None, "msg": "报名成功", },)
+        expected_return = ({"code": 200, "data": None, "msg": "报名成功", },)
         return zip(dataset, expected_return)
+
+
+class NoteSendTest(TestUnit):
+
+    def __init__(self):
+        super().__init__()
+        self.name = "note.send"
+        self.url = TestUnit.domain + "/api/note"
+        self.method = requests.post
+
+    @staticmethod
+    def expect_io():
+        legal_data = {"data": {
+            "name": "test_01",
+            "data": "test note_01"
+        }},
+        expected_return ={'code': 200, 'data': None, 'msg': 'submitted'},
+        return zip(legal_data, expected_return)
+
+
+if __name__ == "__main__":
+    TestUnit.domain = "http://localhost:8080"
+    NoteSendTest().test()
