@@ -16,7 +16,7 @@ func RandomHexString(n int) string {
 
 // GetUserFormEmail works as its name
 func GetUserFormEmail(email string) model.User {
-	//不存在为0
+	//不存在则user.ID为0
 	var user model.User
 	//查找数据库并且把找到的第一个结果传给user
 	common.GetDB().Where("email = ?", email).First(&user)
