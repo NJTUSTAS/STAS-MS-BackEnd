@@ -1,4 +1,4 @@
-FROM harbor.jinhun.moe/library/alpine AS runer
+FROM harbor.jinhun.moe/library/alpine:latest
 
 COPY /build/app .
 RUN chmod +x app
