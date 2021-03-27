@@ -14,7 +14,7 @@ steps:
       - ls -al
   - name: build
     image: harbor.online.njtech.edu.cn/library/golang:lumanke
-     commands:
+    commands:
       - CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -a -o app . 
   - name: publish
     image: harbor.jinhun.moe/library/docker-drone:latest
