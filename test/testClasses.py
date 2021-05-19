@@ -151,14 +151,28 @@ class NoteSendTest(TestUnit):
 
     @staticmethod
     def expect_io():
+        rnd=random_hex_str(2)
         legal_data = {"data": {
-            "name": "test_01",
-            "data": "test note_01"
+            "name": "test_"+rnd,
+            "data": "test note_"+rnd
         }},
-        expected_return ={'code': 200, 'data': None, 'msg': 'submitted'},
+        expected_return = {'code': 200, 'data': None, 'msg': 'submitted'},
         return zip(legal_data, expected_return)
+
+
+class NoteReadTest(TestUnit):
+    def __init__(self):
+        super().__init__()
+        self.name = "note.read"
+        self.url = TestUnit.domain + "/api/list-note"
+        self.method = requests.get
+
+    @staticmethod
+    def expect_io():
+        return [{}, {}], [{}, {}]
 
 
 if __name__ == "__main__":
     TestUnit.domain = "http://localhost:8080"
     NoteSendTest().test()
+    NoteReadTest().test()

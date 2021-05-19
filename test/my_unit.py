@@ -72,9 +72,9 @@ class TestUnit:
         except requests.exceptions.MissingSchema:
             raise UnsetAddressError(self.name)
         except json.decoder.JSONDecodeError as e:
-            print(f"json 解释错误！原文：{response.text}.")
+            print(f"json 解释错误！原文:'{response.text}'.")
             # eval(input()) 
-            raise e
+            raise json.decoder.JSONDecodeError
         if not ret:
             print(f"{self.name}未通过测试。"
                   "未通过测试点:\n"
