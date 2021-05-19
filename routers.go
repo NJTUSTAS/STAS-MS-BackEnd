@@ -18,6 +18,8 @@ func CollectRoute(router *gin.Engine) *gin.Engine {
 	router.GET("/api/auth/info", middleware.AuthMiddleware(), controller.Info)
 
 	router.POST("/api/note",controller.Note)
+	router.GET("/api/list-note",controller.ListNote)
+
 	router.POST("/api/enroll/receive", controller.EnrollReceive) //招新接收信息
 	return router
 }
